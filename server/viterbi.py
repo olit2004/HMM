@@ -1,3 +1,4 @@
+# pyrefly: ignore [missing-import]
 import numpy as np
 
 def viterbi(sentence,
@@ -11,6 +12,7 @@ def viterbi(sentence,
     num_tags = len(tag_to_idx)
     T = len(sentence)
 
+    log_pi = np.log(pi)
     log_A = np.log(A)
     log_B = np.log(B)
 
