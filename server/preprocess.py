@@ -1,39 +1,45 @@
 import csv
 import os
 
+
+
+
+#function to read the data set and retuns an array of sentences as tuple of word and tag 
 def load_corpus(path):
     sentences = []
-    # Make path relative to the current script's directory
+    
     base_dir = os.path.dirname(os.path.abspath(__file__))
     abs_path = os.path.join(base_dir, path)
     
     with open(abs_path, "r", encoding="utf-8") as file:
         reader = csv.reader(file)
-        next(reader)  # Skip the header row
-        
+        next(reader) 
         for row in reader:
             if not row or len(row) < 4:
                 continue
             
-            # The 'raw_text' column contains the word/tag pairs
+            
             raw_text = row[3]
             
-            # Parse the line (word and tag pairs separated by whitespace)
             word_tag_pairs = raw_text.split()
             
             sentence = []
             for pair in word_tag_pairs:
-                # Use rsplit to handle cases where the word itself might contain a '/'
+                
                 parts = pair.rsplit('/', 1)
                 if len(parts) == 2:
                     sentence.append((parts[0], parts[1]))
                 else:
-                    # Fallback for unexpected formats
                     sentence.append((pair, ''))
             
             sentences.append(sentence)
 
     return sentences
+
+
+
+# function to replace tag of less frequent words with unknown 
+
 
 def replace_unk(sentences, threshold=1):
     word_counts = {}
